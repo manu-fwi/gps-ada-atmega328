@@ -1,0 +1,6 @@
+ATMEGA328		UNO		Peripherals
+
+23,24,25		A0,A1,A2 -->	button and rotary encoder
+
+4,6			D2,D4 -->	RS,EN
+11,12,13,14		D5-D8	 -->	D4-D8
