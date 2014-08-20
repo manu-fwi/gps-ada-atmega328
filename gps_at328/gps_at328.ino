@@ -101,7 +101,7 @@ unsigned int sleep_tout;
 volatile unsigned long last_pwr_save;
 
 // initialize the library with the numbers of the interface pins
-LiquidCrystal lcd(2, 3, A3, A2, A1, A0);                  
+LiquidCrystal lcd(A5, A4, A3, A2, A1, A0);                  
 
 // Wathdog interrupt to do power saving delays
 ISR(WDT_vect)
@@ -169,8 +169,8 @@ void gps_init()
 void config_pins()
 {
   // LCD data pins
-  pinMode(2,OUTPUT);
-  pinMode(3,OUTPUT);
+  pinMode(A5,OUTPUT);
+  pinMode(A4,OUTPUT);
   pinMode(A0,OUTPUT);
   pinMode(A1,OUTPUT);
   pinMode(A2,OUTPUT);
@@ -183,18 +183,19 @@ void config_pins()
   pinMode(13, OUTPUT); // SCK
 
   // lcd control MOSFET
-  pinMode(A5,OUTPUT);  
+  pinMode(2,OUTPUT);  
 }
 
 void power_save_pins()
 {
   // Put all pins in INPUT_PULLUP state to save power
-  pinMode(2,INPUT_PULLUP);
-  pinMode(3,INPUT_PULLUP);
+  pinMode(A5,INPUT_PULLUP);
+  pinMode(A4,INPUT_PULLUP);
   pinMode(A0,INPUT_PULLUP);
   pinMode(A1,INPUT_PULLUP);
   pinMode(A2,INPUT_PULLUP);
-  pinMode(A3,INPUT_PULLUP); 
+  pinMode(A3,INPUT_PULLUP);
+  pinMode(2,INPUT_PULLUP);
   for (byte i = 10;i<=13;i++)
     pinMode(i,INPUT_PULLUP);
 }
@@ -202,14 +203,14 @@ void power_save_pins()
 void lcd_enable(boolean enable)
 {
   if (enable) {
-    digitalWrite(A5, HIGH);
+    digitalWrite(2, HIGH);
     delay(10);
     lcd.begin(16,2);
     lcd.display();
   } else {
     lcd.noDisplay();
     delay(10);
-    digitalWrite(A5,LOW);
+    digitalWrite(2,LOW);
   }
 }
 
@@ -275,6 +276,8 @@ void setup() {
   
   // Disable Watchdog
   wdt_disable();
+  
+  lcd_enable(true);
   
   //Setup interrupts
   // rotary encoder (button and A-B channels)
